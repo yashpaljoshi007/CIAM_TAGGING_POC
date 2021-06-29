@@ -1,0 +1,17 @@
+"scripts": {
+    "build": "sh -ac '. ./.env.${BUILD_ENV:-local};echo env-${BUILD_ENV}; react-scripts build && cp -r src/server build'",
+    "dynamic-dev": "chmod +x scripts/dynamicenv.sh  && sh -ac 'scripts/dynamicenv.sh dev' ",
+    "dynamic-tst": "chmod +x scripts/dynamicenv.sh  && sh -ac 'scripts/dynamicenv.sh tst' ",
+    "server:dev": "npm run dynamic-dev && node build/apps/groupretirement/withdrawal/server",
+    "server:tst": "npm run dynamic-tst && node build/apps/groupretirement/withdrawal/server",
+    "server:local": "npm run build && npm run server:prod",
+    "postbuild": "sh -ac ' ./scripts/postbuild.sh;'",
+    "test": "cross-env CI=true react-scripts test --env=jsdom --coverage --color",
+    "test-coverage": "cross-env CI=true react-scripts test --env=jsdom --coverage",
+    "pcf-linux": "rm -rf target/ mkdir target && cp -r build target && mkdir -p build/nginx/conf/includes/ && cp Staticfile manifest-dev.yml build/ && cp custom-nginx.conf build/nginx/conf/includes/ && cd build && echo cf push -f manifest-dev.yml",
+    "pcf-windows": "react-scripts build && cscript.exe scripts/pcf-windows/pcf-windows.vbs && cd target && cf push -f manifest-dev.yml --random-route",
+    "eject": "react-scripts eject",
+    "precommit": "npm test --watch",
+    "start-local": "react-scripts start",
+    "preinstall": "npx npm-force-resolutions"
+  },
